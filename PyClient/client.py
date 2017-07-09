@@ -54,13 +54,12 @@ class EEGData():
             print(self.currdata.shape)
             custom_raw = mne.io.RawArray(self.currdata, self.info)
             custom_raw = custom_raw.filter(1., 30., h_trans_bandwidth='auto', filter_length='auto', phase='zero', picks = [0,1,2,3])
-            data = custom_raw[:]
+            data, _ = np.array(custom_raw[:])
             data = [np.mean(x) for x in data]
-	    data.append[0,0,0]
-            print(str(data))
 
         else:
             data = self.filtered_eeg
+        print(str(data))
         return data
 
 
