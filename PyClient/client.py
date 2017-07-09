@@ -20,7 +20,7 @@ IMAGE_DIR = "images"
 EXTEN = ".png"
 DEFAULT_IP = "0.0.0.0"
 REFRESH_RATE = 0.1
-NUM_RECORDINGS = 10
+NUM_RECORDINGS = 20
 THRESHOLD = 0.9
 RAW_COLUMNS = ['RAW_TP9', 'RAW_AF7', 'RAW_AF8', 'RAW_TP10']
 SAMPLING_RATE= 256
@@ -32,8 +32,10 @@ class EEGData():
         self.lock = multiprocessing.Lock()
         self.num_req = 0
         self.currdata = [] 
+        self.accdata = [0,0,0]
         self.info = mne.create_info(RAW_COLUMNS, SAMPLING_RATE, ch_types = 'eeg')
         self.filtered_eeg = [0, 0, 0, 0]
+        #self.alphas = [0, 0, 0, 0]
 
     def add_data(self, new_data):
 
@@ -47,6 +49,9 @@ class EEGData():
         self.num_req += 1
         print(self.num_req)
 
+    def add_acc(self, acc_data):
+        self.accdata = acc_data
+
     def get_filtered_eeg(self):
 
         if self.num_req == NUM_RECORDINGS:
@@ -57,8 +62,12 @@ class EEGData():
             data, _ = np.array(custom_raw[:])
             data = [np.mean(x) for x in data]
 
+            #psds = custom_raw.plot_psd(area_mode='range', average=False, picks = [0,1,2], n_fft = 16)
+            #print(str(psds))
+
         else:
             data = self.filtered_eeg
+            #alphas = self.alphas
         print(str(data))
         return data
 
@@ -79,6 +88,7 @@ def setup_server(data):
     dispatcher = dp.Dispatcher()
     dispatcher.map("/debug", print)
     dispatcher.map("/muse/eeg", lambda addr, args, ch1, ch2, ch3, ch4, ch5: eeg_handler(addr, args, ch1, ch2, ch3, ch4, ch5, data), "EEG")
+    dispatcher.map("/muse/acc", lambda addr, args, ch1, ch2, ch3: eacc_handler(addr, args, ch1, ch2, ch3, data), "EEG")
 
     server = osc_server.ThreadingOSCUDPServer(
         (args.ip, args.port), dispatcher)
@@ -103,6 +113,11 @@ def eeg_handler(unused_addr, args, ch1, ch2, ch3, ch4, ch5, eeg):
     data = [ch1, ch2, ch3, ch4]
     currmax = np.nan_to_num(data)
     eeg.add_data(currmax)
+
+def acc_handler(unused_addr, args, ch1, ch2, ch3, eeg):
+
+    data = [ch1, ch2, ch3]
+    eeg.add_acc(data)
 
 
 def start_server(data):
@@ -133,4 +148,5 @@ if __name__ == "__main__":
         client.send_message("/muse/elements/delta_absolute", filtered_eeg)
         client.send_message("/muse/elements/theta_absolute", filtered_eeg)
         client.send_message("/muse/elements/gamma_absolute", filtered_eeg)
+        client.send_message("/muse/acc", data.accdata)
         
