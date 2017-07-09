@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2015
+# Visual Studio 2017
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCI_Unity.Plugins", "BCI_Unity.Plugins.csproj", "{1AC1F1C2-8BBC-0DE1-2AF1-E4FEAF92E91A}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCI_Unity", "BCI_Unity.csproj", "{3735743D-A348-0FDA-9921-C8FF80714491}"
