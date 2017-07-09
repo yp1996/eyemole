@@ -450,6 +450,7 @@
     <Compile Include="Assets\VRTK\Scripts\Utilities\VRTK_SharedMethods.cs" />
     <Compile Include="Assets\VRTK\Scripts\Utilities\VRTK_Simulator.cs" />
     <Compile Include="Assets\camerafollow.cs" />
+    <Compile Include="Assets\changeColour.cs" />
     <Compile Include="Assets\playerControl.cs" />
   </ItemGroup>
   <ItemGroup>

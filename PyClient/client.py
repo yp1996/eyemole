@@ -32,10 +32,10 @@ class EEGData():
         self.lock = multiprocessing.Lock()
         self.num_req = 0
         self.currdata = [] 
-        self.accdata = [0,0,0]
+        self.accdata = [0,0,0,0,0]
         self.info = mne.create_info(RAW_COLUMNS, SAMPLING_RATE, ch_types = 'eeg')
         self.filtered_eeg = [0, 0, 0, 0]
-        #self.alphas = [0, 0, 0, 0]
+        self.alphas = [0, 0, 0, 0]
 
     def add_data(self, new_data):
 
@@ -50,7 +50,10 @@ class EEGData():
         print(self.num_req)
 
     def add_acc(self, acc_data):
-        self.accdata = acc_data
+        self.accdata = acc_data + [0,0]
+     
+    def add_alpha(self, alpha):
+        self.alphas = alpha
 
     def get_filtered_eeg(self):
 
@@ -87,8 +90,9 @@ def setup_server(data):
 
     dispatcher = dp.Dispatcher()
     dispatcher.map("/debug", print)
-    dispatcher.map("/muse/eeg", lambda addr, args, ch1, ch2, ch3, ch4, ch5: eeg_handler(addr, args, ch1, ch2, ch3, ch4, ch5, data), "EEG")
-    dispatcher.map("/muse/acc", lambda addr, args, ch1, ch2, ch3: eacc_handler(addr, args, ch1, ch2, ch3, data), "EEG")
+    #dispatcher.map("/muse/eeg", lambda addr, args, ch1, ch2, ch3, ch4, ch5: eeg_handler(addr, args, ch1, ch2, ch3, ch4, ch5, data), "EEG")
+    dispatcher.map("/muse/elements/alpha_absolute", lambda addr, args, ch1, ch2, ch3, ch4: alpha_handler(addr, args, ch1, ch2, ch3, ch4, data), "EEG")
+    dispatcher.map("/muse/acc", lambda addr, args, ch1, ch2, ch3: acc_handler(addr, args, ch1, ch2, ch3, data), "EEG")
 
     server = osc_server.ThreadingOSCUDPServer(
         (args.ip, args.port), dispatcher)
@@ -113,6 +117,12 @@ def eeg_handler(unused_addr, args, ch1, ch2, ch3, ch4, ch5, eeg):
     data = [ch1, ch2, ch3, ch4]
     currmax = np.nan_to_num(data)
     eeg.add_data(currmax)
+
+def alpha_handler(unused_addr, args, ch1, ch2, ch3, ch4, eeg):
+
+    data = [ch1, ch2, ch3, ch4]
+    currmax = np.nan_to_num(data)
+    eeg.add_alpha(currmax)
 
 def acc_handler(unused_addr, args, ch1, ch2, ch3, eeg):
 
@@ -143,10 +153,10 @@ if __name__ == "__main__":
         data.num_req = 0
         data.currdata = []
         client.send_message("/muse/eeg", filtered_eeg)
-        client.send_message("/muse/elements/alpha_absolute", filtered_eeg)
+        client.send_message("/muse/elements/alpha_absolute", data.alphas)
         client.send_message("/muse/elements/beta_absolute", filtered_eeg)
         client.send_message("/muse/elements/delta_absolute", filtered_eeg)
         client.send_message("/muse/elements/theta_absolute", filtered_eeg)
         client.send_message("/muse/elements/gamma_absolute", filtered_eeg)
-        client.send_message("/muse/acc", data.accdata)
+        #client.send_message("/muse/acc", data.accdata)
         

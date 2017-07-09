@@ -9,24 +9,26 @@ public class OSCTest : MonoBehaviour {
 	
 	private Dictionary<string, ServerLog> servers;
 
-	public static double[] eegData;
-	public static double[] alphaData;
-	public static double[] betaData;
-	public static double[] deltaData;
-	public static double[] thetaData;
-	public static double[] gammaData;
+	public static float[] eegData;
+	public static float[] alphaData;
+	public static float[] betaData;
+	public static float[] deltaData;
+	public static float[] thetaData;
+	public static float[] gammaData;
+    public static float[] accData;
 	
 	// Script initialization
 	void Start() {	
 		UnityEngine.Debug.Log("Started");
 		OSCHandler.Instance.Init(); //init OSC
 		servers = new Dictionary<string, ServerLog>();
-		eegData = new double[4];
-		alphaData = new double[4];
-		betaData = new double[4];
-		thetaData = new double[4];
-		deltaData = new double[4];
-		gammaData = new double[4];
+		eegData = new float[4];
+		alphaData = new float[4];
+		betaData = new float[4];
+		thetaData = new float[4];
+		deltaData = new float[4];
+		gammaData = new float[4];
+        accData = new float[3];
 	}
 
 	// NOTE: The received messages at each server are updated here
@@ -51,37 +53,56 @@ public class OSCTest : MonoBehaviour {
 					OSCMessage msg1 = (OSCMessage) (item.Value.packets[lastPacketIndex].Data[0]);
 
 					String addr = msg1.Address;
-					
-					if (addr == "/muse/elements/alpha_absolute"){
-						for (int i = 0; i <= 3; i++) {
-							alphaData [i] = (double) msg1.Data[i];
-						}
-					}
-					else if (addr == "/muse/elements/beta_absolute"){
-						for (int i = 0; i <= 3; i++) {
-							betaData [i] = (double) msg1.Data[i];
-						}
-					}
-					else if (addr == "/muse/elements/theta_absolute"){
-						for (int i = 0; i <= 3; i++) {
-							thetaData[i] = (double) msg1.Data[i];
-						}
-					}
-					else if (addr == "/muse/elements/delta_absolute"){
-						for (int i = 0; i <= 3; i++) {
-							deltaData[i] = (double) msg1.Data[i];
-						}
-					}
-					else if (addr == "/muse/elements/gamma_absolute"){
-						for (int i = 0; i <= 3; i++) {
-							gammaData[i] = (double) msg1.Data[i];
-						}
-					}
-					else if (addr == "/muse/eeg"){
-						for (int i = 0; i <= 3; i++) {
-							eegData[i] = (double) msg1.Data[i];
-						}
-					}
+                    Debug.Log(addr);
+                    if (addr == "/muse/elements/alpha_absolute")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            alphaData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/elements/beta_absolute")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            betaData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/elements/theta_absolute")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            thetaData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/elements/delta_absolute")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            deltaData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/elements/gamma_absolute")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            gammaData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/eeg")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            eegData[i] = (float)msg1.Data[i];
+                        }
+                    }
+                    else if (addr == "/muse/acc")
+                    {
+                        for (int i = 0; i <= 3; i++)
+                        {
+                            accData[i] = (float)msg1.Data[i];
+                        }
+                    }
 
 
 				}
