@@ -1,7 +1,7 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCI_Unity", "Assembly-CSharp.csproj", "{83BE13FD-69CB-CBC0-9950-EE0B10C05616}"
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2017
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BCI_Unity", "BCI_Unity.csproj", "{3735743D-A348-0FDA-9921-C8FF80714491}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -9,15 +9,12 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{83BE13FD-69CB-CBC0-9950-EE0B10C05616}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{83BE13FD-69CB-CBC0-9950-EE0B10C05616}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{83BE13FD-69CB-CBC0-9950-EE0B10C05616}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{83BE13FD-69CB-CBC0-9950-EE0B10C05616}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3735743D-A348-0FDA-9921-C8FF80714491}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3735743D-A348-0FDA-9921-C8FF80714491}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3735743D-A348-0FDA-9921-C8FF80714491}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3735743D-A348-0FDA-9921-C8FF80714491}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
-	EndGlobalSection
-	GlobalSection(MonoDevelopProperties) = preSolution
-		StartupItem = Assembly-CSharp.csproj
 	EndGlobalSection
 EndGlobal
