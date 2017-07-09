@@ -18,7 +18,7 @@ from pythonosc import udp_client
 
 IMAGE_DIR = "images"
 EXTEN = ".png"
-DEFAULT_IP = "127.0.0.1"
+DEFAULT_IP = "0.0.0.0"
 REFRESH_RATE = 0.1
 NUM_RECORDINGS = 10
 THRESHOLD = 0.9
@@ -53,9 +53,10 @@ class EEGData():
             self.currdata = np.array(self.currdata)
             print(self.currdata.shape)
             custom_raw = mne.io.RawArray(self.currdata, self.info)
-            custom_raw = custom_raw.filter(1., 30., h_trans_bandwidth='auto', filter_length='auto', phase='zero', picks = [0,1,2])
+            custom_raw = custom_raw.filter(1., 30., h_trans_bandwidth='auto', filter_length='auto', phase='zero', picks = [0,1,2,3])
             data = custom_raw[:]
             data = [np.mean(x) for x in data]
+	    data.append[0,0,0]
             print(str(data))
 
         else:
@@ -90,10 +91,12 @@ def setup_client(data):
     ip = socket.gethostbyname(socket.gethostname())
     parser = argparse.ArgumentParser()
     parser.add_argument("--ip", default= ip, help="The ip of the OSC server")
-    parser.add_argument("--port", type=int, default=5005, help="The port the OSC server is listening on")
+    parser.add_argument("--port", type=int, default=5000, help="The port the OSC server is listening on")
     args = parser.parse_args()
 
     client = udp_client.SimpleUDPClient(args.ip, args.port)
+    print("Serving on {}".format(client._address))
+    print("Serving on {}".format(client._port))
     return client
 
 def eeg_handler(unused_addr, args, ch1, ch2, ch3, ch4, ch5, eeg):

@@ -19,7 +19,7 @@ public class MoveBall : MonoBehaviour {
 		frontAsymmetry = (float)(OSCTest.eegData [1] - OSCTest.eegData [2]);
         frontAsymmetry = Math.Min(frontAsymmetry, maxVelocity);
         frontAsymmetry = Math.Max(frontAsymmetry, -maxVelocity);
-        Debug.Log(frontAsymmetry.ToString());
+        //Debug.Log(frontAsymmetry.ToString());
         transform.Rotate(Vector3.up * frontAsymmetry);
 	}
 }
