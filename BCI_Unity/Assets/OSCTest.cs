@@ -51,7 +51,7 @@ public class OSCTest : MonoBehaviour {
 					OSCMessage msg1 = (OSCMessage) (item.Value.packets[lastPacketIndex].Data[0]);
 
 					String addr = msg1.Address;
-					//Debug.Log (addr.ToString ());
+					Debug.Log (addr.ToString ());
 					
 					if (addr == "/muse/elements/alpha_absolute"){
 						for (int i = 0; i <= 3; i++) {
