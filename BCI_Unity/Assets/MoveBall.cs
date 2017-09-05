@@ -17,6 +17,7 @@ public class MoveBall : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		frontAsymmetry = (float)(OSCTest.eegData [1] - OSCTest.eegData [2]);
+		Debug.Log(frontAsymmetry.ToString());
         frontAsymmetry = Math.Min(frontAsymmetry, maxVelocity);
         frontAsymmetry = Math.Max(frontAsymmetry, -maxVelocity);
         Debug.Log(frontAsymmetry.ToString());
