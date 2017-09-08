@@ -48,15 +48,7 @@
   <ItemGroup>
      <Compile Include="Assets\MoveBall.cs" />
      <Compile Include="Assets\OSC.cs" />
-     <Compile Include="Assets\OSCBundle.cs" />
-     <Compile Include="Assets\OSCClient.cs" />
-     <Compile Include="Assets\OSCControl.cs" />
-     <Compile Include="Assets\OSCHandler.cs" />
-     <Compile Include="Assets\OSCMessage.cs" />
-     <Compile Include="Assets\OSCPacket.cs" />
-     <Compile Include="Assets\OSCServer.cs" />
      <Compile Include="Assets\OSCTest.cs" />
-     <None Include="Assets\OSCControl.txt" />
  <Reference Include="UnityEngine.UI">
  <HintPath>C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
  </Reference>

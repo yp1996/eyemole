@@ -15,6 +15,7 @@ public class OSCTest : MonoBehaviour {
 	public static float[] thetaData;
 	public static float[] gammaData;
 	public static float[] accData;
+	public static float GSRData;
 	
 	// Script initialization
 	void Start() {	
@@ -33,6 +34,7 @@ public class OSCTest : MonoBehaviour {
 		osc.SetAddressHandler( "/muse/elements/gamma_absolute" , OnReceiveGamma);
 		osc.SetAddressHandler( "/muse/elements/delta_absolute" , OnReceiveDelta);
 		osc.SetAddressHandler( "/muse/acc" , OnReceiveAcc);
+		osc.SetAddressHandler( "/gsr" , OnReceiveGSR);
 	}
 
 	// NOTE: The received messages at each server are updated here
@@ -82,5 +84,9 @@ public class OSCTest : MonoBehaviour {
 		for (int i = 0; i < 3; i++) {
 			accData[i] = message.GetFloat(i);
 		}
+	}
+
+	void OnReceiveGSR(OscMessage message) {
+		GSRData = message.GetFloat(0);
 	}
 }
