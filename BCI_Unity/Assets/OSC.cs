@@ -21,103 +21,6 @@ using System.Threading;
 using System.Text;
 using UnityEngine;
 
-
-/// \mainpage
-/// \section Overview
-/// The .NET Visual C# library for the Make Controller Kit is designed 
-/// to make it as simple as possible for developers to integrate the 
-/// Make Controller Kit into their desktop applications, offering the 
-/// transparency that makes open source software so rewarding to work with.  
-/// You can communicate with the Make Controller Kit from your applications 
-/// over either an Ethernet or USB connection, or both.  This library is 
-/// supplied both in source form and built, as MakeControllerOsc.dll
-/// This document is a reference for MakeControllerOsc.
-/// 
-/// \section Communication
-/// Messages to and from the board conform to the OSC (Open Sound Control) protocol.  
-/// OSC is an open, transport-independent standard supported by an increasing 
-/// number of environments and devices. 
-/// 
-/// \subsection OSCmessages OSC Messages
-/// OSC messages are represented by the class OscMessage, and consist of two elements:
-/// - An address string for the device on the board you�re dealing with.
-/// - A list of value(s) being sent to or from that device. The list of values is optional.
-/// 
-/// From the perspective of OSC addresses, the Make Controller Kit is organized into a hierarchy of two or three layers:
-/// - subsystems � classes of device, such as analog inputs, servo controllers, and digital outputs.
-/// - devices � the index of a specific device within a subsystem.  
-/// If there is only one device in a subsystem, the device is not included in the OSC address.
-/// - properties � different devices have different properties, such as the value of an analog input, 
-/// the position of a servo motor, or the state of an LED. 
-/// 
-/// OSC messages always begin with a slash, and use a slash to delimit each element in the address, 
-/// so an example OSC address string would look like:
-/// \code /subsystem/device/property \endcode
-/// 
-/// The second part of an OscMessage is a list of values to be sent to the specified address. 
-/// The OSC types that are used by the Make Controller Kit for these values are integers, 
-/// floats, and strings.  The values in this list are simply separated by spaces, and the 
-/// list can be arbitrarily long.  Most devices on the Make Controller Kit expect only one value.  
-/// For example, to set the position of servo 1, you might send a message which 
-/// in string form might look like:
-/// \code /servo/1/position 512 \endcode
-/// 
-/// This addressing scheme allows interactions with the board's various subsystems 
-/// and properties, and most importantly, accommodates the possibility of future or 
-/// custom devices on the board that have not yet been implemented or imagined.  
-/// If somebody creates, for example, a GPS extension to the board, communicating 
-/// with that device from this library is the same as for any other.  More details 
-/// about OSC can be found at http://www.opensoundcontrol.org.
-/// 
-/// \section sendingdata Sending Data
-/// As previously mentioned, the Make Controller Kit can communicate over both 
-/// Ethernet and USB.  Messages are sent as packets, both over USB and UDP, and 
-/// corresponding structures are used � UsbPacket and UdpPacket.  Once you�ve created 
-/// a packet, you can simply call its Send() method, with the OscMessage you�d like to send.  
-/// There are helper methods to create an OscMessage from a string, or you can pass in the OscMessage itself. 
-/// 
-/// For example, you might set up your UsbSend() routine to look something like:
-/// \code public void usbSend(string text)
-/// {
-///     OscMessage oscM = OSC.StringToOscMessage(text);
-///     oscUsb is an Osc object, connected to a UsbPacket object 
-///     oscUsb.Send(oscM);
-/// } \endcode
-/// If your data is already in the form of an OscMessage, you can call oscUsb.Send() directly.
-/// 
-/// \section readingdata Reading Data
-/// The Make Controller Kit must be polled in order to read data from it.  To do this, 
-/// send an OscMessage with the address of the device you�d like to read, but omit 
-/// the list of values.  When the board receives an OscMessage with no value, 
-/// it interprets that as a read request, and sends back an OscMessage with the 
-/// current value at the appropriate address.
-/// 
-/// The .NET Make Controller Kit library conveniently provides handlers that will 
-/// call back a given function when an OscMessage with a given address string is received.  
-/// Your implementation could look something like:
-/// \code// Set the handler in the constructor for a particular address
-/// MyConstructor()
-/// {
-///     udpPacket = new UdpPacket();
-///     oscUdp = new Osc(udpPacket);
-///     // A thread is started when the Osc object is created to read 
-///     // incoming messages.
-///     oscUdp.SetAddressHandler("/analogin/0/value", Ain0Message);
-/// }
-///
-/// // The method you specified as the handler will be called back when a 
-/// // message with a matching address string comes back from the board.
-/// public void AIn0Message(OscMessage oscMessage)
-/// {
-///     // write the message to a console, for example
-///     mct.WriteLine("AIn0 > " + oscMessage.ToString() );
-/// } \endcode
-/// You could alternatively set a handler for all incoming messages by calling 
-/// the SetAllMessageHandler() method in your setup, instead of SetAddressHandler().
-/// 
-/// 
-
-
 /// <summary>
 /// UdpPacket provides packetIO over UDP
 /// </summary>
@@ -919,6 +822,24 @@ public class UDPPacketIO
               oscM.values.Add(f);
               break;
             }
+			case 'd':
+			{
+				byte[] buffer = new byte[8];
+				buffer[7] = packet[index++];
+				buffer[6] = packet[index++];
+				buffer[5] = packet[index++];
+				buffer[4] = packet[index++];
+				buffer[3] = packet[index++];
+				buffer[2] = packet[index++];
+				buffer[1] = packet[index++];
+				buffer[0] = packet[index++];
+				MemoryStream ms = new MemoryStream(buffer);
+				BinaryReader br = new BinaryReader(ms);
+				float f = br.ReadSingle();
+				oscM.values.Add(f);
+				break;
+					
+			}
         }
       }
       messages.Add( oscM );

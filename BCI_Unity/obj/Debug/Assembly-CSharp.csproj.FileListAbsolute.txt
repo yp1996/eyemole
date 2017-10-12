@@ -29,3 +29,5 @@ C:\Users\Yana\Documents\BCI_Unity\Temp\bin\Debug\UnityEngine.HoloLens.xml
 C:\Users\Yana\Documents\BCI_Unity\Temp\bin\Debug\UnityEngine.VR.xml
 C:\Users\Yana\Documents\BCI_Unity\obj\Debug\Assembly-CSharp.dll
 C:\Users\Yana\Documents\BCI_Unity\obj\Debug\Assembly-CSharp.pdb
+C:\Users\Yana\Desktop\eyemole\BCI_Unity\obj\Debug\Assembly-CSharp.csprojResolveAssemblyReference.cache
+C:\Users\Yana\Desktop\eyemole\BCI_Unity\obj\Debug\Assembly-CSharp.dll

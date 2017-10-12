@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -21,7 +21,7 @@ public class MoveBall : MonoBehaviour {
 		Debug.Log(frontAsymmetry.ToString());
         frontAsymmetry = Math.Sign(frontAsymmetry);
         Debug.Log(frontAsymmetry.ToString());
-        frontAsymmetry = frontAsymmetry * Math.Min(maxVelocity, Math.Max(OSCTest.GSRData/500, 1));
+		frontAsymmetry = (float) (frontAsymmetry * Math.Min(maxVelocity, Math.Max(1-OSCTest.GSRData/500, 0.1)));
         transform.Rotate(Vector3.up * frontAsymmetry);
 	}
 }
